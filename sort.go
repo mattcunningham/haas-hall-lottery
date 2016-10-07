@@ -1,7 +1,8 @@
 package main
 
 import (
-	"rand"
+	"math/rand"
+	"time"
 )
 
 const (
@@ -11,15 +12,14 @@ const (
 )
 
 type Entry struct {
-	Status  int               // admitted or waitlisted
-	Faculty bool              // gets first priority
-	Sibling bool              // second priority
-	Info    map[string]string // unnecessary to formally store private info
+	Status   int               // admitted or waitlisted
+	Priority int               // priority status
+	Info     map[string]string // unnecessary to formally store private info
 }
 
 // randomly sorts entries, no acceptances/waitlists are determined here
 func Sort(allEntries []Entry) []Entry {
-	seed := rand.New()                       // ensuring random seed
+	seed := rand.New(rand.NewSource(time.Now().UnixNano())) // ensures randomness
 	perm := seed.Perm(len(allEntries))       // permutation of all numbers [0, len(allEntries))
 	sorted := make([]Entry, len(allEntries)) // creating new array that will be sorted
 	for i, v := range perm {
@@ -28,25 +28,54 @@ func Sort(allEntries []Entry) []Entry {
 	return sorted
 }
 
-// provide faculty member children with ultimate priority
-// provide siblings with second priority
-// no more priority after that
+// The entries are sorted so higher priority numbers
+// are placed at the front of the list. Typically, there will
+// only be two priority numbers for faculty and siblings.
+// Additional numbers depend on school needs.
 func Prioritize(allEntries []Entry) []Entry {
-	var (
-		facultyPriority []Entry
-		siblingPriority []Entry
-	)
-	for i, v := range allEntries {
-		if v.Faculty {
-			facultyPriority = append(facultyPriority, v)
-			allEntries = append(allEntries[:i], allEntries[i+1:])
-		} else if v.Sibling {
-			siblingPriority = append(facultyPriority, v)
-			allEntries = append(allEntries[:i], allEntries[i+1:])
+	var priority, fullList []Entry
+	for _, v := range allEntries {
+		if v.Priority > 0 {
+			priority = append(priority, v) // this priority list will precede the regular list
+		} else {
+			fullList = append(fullList, v) // if not priority, go to regular list
 		}
 	}
-	allEntries = append(facultyPriority, append(siblingPriority, allEntries...)...) // merging slices together is tricky. the dots make it a variadic function. probably a better way to do this
-	return allEntries
+	priority = MergeSort(priority)
+	return append(priority, fullList...)
+}
+
+// part of merge sort algorithm; merges left/right halves of slice
+func Merge(l, r []Entry) []Entry {
+	ret := make([]Entry, 0, len(l)+len(r)) // return value
+	for len(l) > 0 || len(r) > 0 {
+		if len(l) == 0 {
+			return append(ret, r...)
+		}
+		if len(r) == 0 {
+			return append(ret, l...)
+		}
+		if l[0].Priority >= r[0].Priority {
+			ret = append(ret, l[0])
+			l = l[1:]
+		} else {
+			ret = append(ret, r[0])
+			r = r[1:]
+		}
+	}
+	return ret
+}
+
+// traditional mergesort sorting algorithm
+// due to its stability, it's the best choice
+func MergeSort(entries []Entry) []Entry {
+	if len(entries) <= 1 {
+		return entries
+	}
+	n := len(entries) / 2
+	l := MergeSort(entries[:n])
+	r := MergeSort(entries[n:])
+	return Merge(l, r)
 }
 
 // given a cap of int size, will add to the []Entry struct if scholar is admitted or not
@@ -58,4 +87,5 @@ func Admit(allEntries []Entry, limit int) []Entry {
 			v.Status = WAITLISTED
 		}
 	}
+	return allEntries
 }
