@@ -2,10 +2,7 @@ language: go
 go:
   - tip
 before_install:
-- go get github.com/mattcunningham/haas-hall-lottery
-- go get github.com/axw/gocov/gocov
-- go get github.com/mattn/goveralls
-- if ! go get code.google.com/p/go.tools/cmd/cover; then go get golang.org/x/tools/cmd/cover; fi
+- go get -d github.com/mattcunningham/haas-hall-lottery
+
 script:
-  - $HOME/gopath/bin/goveralls -service=travis-ci
-  - go test -v
+- go test -v ./...
