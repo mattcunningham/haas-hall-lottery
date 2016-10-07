@@ -19,7 +19,7 @@ func TestSort(t *testing.T) {
 			error++
 		}
 	}
-	if error > 1 { // our MOE can't be greater than 1/25
+	if error > 5 { // our MOE can't be greater than 1/10
 		t.Error("List not randomly sorted.")
 	}
 }
@@ -38,5 +38,14 @@ func TestRandomPrioritize(t *testing.T) {
 			t.Error("Priority numbers not properly sorted")
 		}
 		lastNumber = v.Priority
+	}
+}
+
+func TestAdmit(t *testing.T) {
+	emptyList := make([]Entry, 5)
+	sorted := Sort(emptyList)
+	admitted := Admit(sorted, 1)
+	if admitted[0].Status != ADMITTED && admitted[0].Status != WAITLISTED {
+		t.Error("Improper amount of entries admitted.")
 	}
 }

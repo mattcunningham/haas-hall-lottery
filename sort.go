@@ -80,11 +80,11 @@ func MergeSort(entries []Entry) []Entry {
 
 // given a cap of int size, will add to the []Entry struct if scholar is admitted or not
 func Admit(allEntries []Entry, limit int) []Entry {
-	for i, v := range allEntries {
+	for i := range allEntries {
 		if i < limit {
-			v.Status = ADMITTED
+			allEntries[i].Status = ADMITTED
 		} else {
-			v.Status = WAITLISTED
+			allEntries[i].Status = WAITLISTED
 		}
 	}
 	return allEntries
