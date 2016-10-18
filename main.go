@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
-	"io/ioutil"
 	"os"
 )
 
@@ -68,7 +68,7 @@ func main() {
 		}
 		s := OpenPage("lottery.html")
 		w.Header().Set("Content-Type", "text/html")
-		w.Write([]byte(s)) // prints to webpage
+		w.Write([]byte(s))                                       // prints to webpage
 		fmt.Println(formatPrint("REQUEST[200]: ", GREEN), r.URL) // prints to console
 	})
 	log.Fatal(http.ListenAndServe(":8080", nil))
