@@ -14,14 +14,15 @@ const (
 type Entry struct {
 	Status   int               // admitted or waitlisted
 	Priority int               // priority status
+	Grade    int               // grade of student
 	Info     map[string]string // unnecessary to formally store private info
 }
 
 // randomly sorts entries, no acceptances/waitlists are determined here
 func Sort(allEntries []Entry) []Entry {
 	seed := rand.New(rand.NewSource(time.Now().UnixNano())) // ensures randomness
-	perm := seed.Perm(len(allEntries))       // permutation of all numbers [0, len(allEntries))
-	sorted := make([]Entry, len(allEntries)) // creating new array that will be sorted
+	perm := seed.Perm(len(allEntries))                      // permutation of all numbers [0, len(allEntries))
+	sorted := make([]Entry, len(allEntries))                // creating new array that will be sorted
 	for i, v := range perm {
 		sorted[i] = allEntries[v] // for every index, a random entry is selected
 	}

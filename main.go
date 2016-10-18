@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 )
 
 const (
@@ -24,11 +26,28 @@ func formatPrint(s string, color string) string {
 func NotFound(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotFound)
 	fmt.Println(formatPrint("REQUEST[404]: ", RED), r.URL)
-	w.Write([]byte("404 not found"))
-	// a custom 404 page can be written from here
+	s := OpenPage("404.html")
+	w.Header().Set("Content-Type", "text/html")
+	w.Write([]byte(s))
 }
 
-// main function to serve the site
+// Opens a web page in the /static/ directory and returns as a string
+// As we aren't dealing with *massive* files, and since this is self-serving
+// we don't have to worry about network security (since the program doesn't interact with
+// a network).
+func OpenPage(fileName string) string {
+	wd, err := os.Getwd()
+	if err != nil {
+		panic(err)
+	}
+	data, err := ioutil.ReadFile(wd + "/web/" + fileName)
+	if err != nil {
+		panic(err)
+	}
+	return string(data)
+}
+
+// Main function to serve the site
 func main() {
 	// serves for the webpage "/" — i.e. the homepage
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -36,10 +55,21 @@ func main() {
 			NotFound(w, r)
 			return
 		}
-		s := "welcome to the page; we don't know what we're doing"
+		s := OpenPage("home.html") // the home page content
+		w.Header().Set("Content-Type", "text/html")
 		w.Write([]byte(s))                                       // prints to webpage
 		fmt.Println(formatPrint("REQUEST[200]: ", GREEN), r.URL) // prints to console
 	})
 
+	http.HandleFunc("/lottery", func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/lottery" {
+			NotFound(w, r)
+			return
+		}
+		s := OpenPage("lottery.html")
+		w.Header().Set("Content-Type", "text/html")
+		w.Write([]byte(s))                                       // prints to webpage
+		fmt.Println(formatPrint("REQUEST[200]: ", GREEN), r.URL) // prints to console
+	})
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
