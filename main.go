@@ -6,6 +6,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
+	"runtime"
 )
 
 const (
@@ -71,5 +73,13 @@ func main() {
 		w.Write([]byte(s))                                       // prints to webpage
 		fmt.Println(formatPrint("REQUEST[200]: ", GREEN), r.URL) // prints to console
 	})
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	switch runtime.GOOS {
+	case "linux":
+		err = exec.Command("xdg-open", "http://localhost:1427/").Start()
+	case "windows", "darwin":
+		err = exec.Command("open", "http://localhost:1427/").Start()
+	default:
+		err = fmt.Errorf("unsupported platform!")
+	}
+	log.Fatal(http.ListenAndServe(":1427", nil))
 }
