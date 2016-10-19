@@ -73,6 +73,7 @@ func main() {
 		w.Write([]byte(s))                                       // prints to webpage
 		fmt.Println(formatPrint("REQUEST[200]: ", GREEN), r.URL) // prints to console
 	})
+	var err error
 	switch runtime.GOOS {
 	case "linux":
 		err = exec.Command("xdg-open", "http://localhost:1427/").Start()
@@ -80,6 +81,9 @@ func main() {
 		err = exec.Command("open", "http://localhost:1427/").Start()
 	default:
 		err = fmt.Errorf("unsupported platform!")
+	}
+	if err != nil {
+		panic(err)
 	}
 	log.Fatal(http.ListenAndServe(":1427", nil))
 }
