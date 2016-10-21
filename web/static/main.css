@@ -1,0 +1,25 @@
+body {
+     margin: 0px;
+     padding: 0px;
+     background: #fff;
+}
+
+header {
+       position: relative;
+       text-align: center;
+       padding-top: 30px;
+       width: 25%;
+       height: 100%;
+       background: #eee;
+       float: left;
+       overflow: hidden;
+}
+
+main {
+     position: relative;
+     width: 75%;
+     height: 100%;
+     background: #005198;
+     float: right;
+     padding-top: 30px;
+}
