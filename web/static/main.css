@@ -8,18 +8,59 @@ header {
        position: relative;
        text-align: center;
        padding-top: 30px;
-       width: 25%;
+       padding-right: -2px;
+       width: 20%;
        height: 100%;
        background: #eee;
        float: left;
        overflow: hidden;
 }
 
+header:after {
+    content: '';
+    display: block;
+    position: absolute;
+        top: 0; right: 0;
+    width: 6px;
+    height: 100%;
+    background: #ffc63d;
+}
+
+header > img {
+       width: 80%;
+       margin-bottom: 25px;
+}
+
+#hidesidebar {
+        display: none;
+}
+
+#hidesidebar:checked + label > img {
+	width: 50%;
+}
+
+hr {
+   color: #ffc63d;
+   border-color: #ffc63d;
+   background-color: #ffc63d;
+   margin: 0px 20px;
+}
+
 main {
      position: relative;
-     width: 75%;
+     width: 80%;
      height: 100%;
      background: #005198;
      float: right;
-     padding-top: 30px;
+     padding-top: 38px;
+}
+
+main:before {
+    font-weight: bold;
+    content: '«';
+    width: 50px;
+    background: #ffc63d;
+    color: #005198;
+    font-size: 30px;
+    padding: 0px 10px 4px 10px;
 }
