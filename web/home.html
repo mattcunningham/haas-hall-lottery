@@ -10,10 +10,15 @@
       <hr/>
     </header>
     <main>
-      <div id="container">
-	Testing.
-      </div>
+      <form id="container" action="/import" method="post">
+	<div id="import">
+	  <label for="getData" id="getDataButton">Import CSV Data</label>
+	  <input value="Import CSV Data" accept=".csv" type="file" id="getData"/>
+	</div>
+      </form>
+      <div id="fromServer"></div>
     </main>
+    <script src="/static/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script src="/static/main.js" type="text/javascript"></script>
   </body>
 </html>
-  
