@@ -93,7 +93,8 @@ main:after {
     height: 90%;
     width: 97%;
     margin: 15px;
-    z-index: -1
+    z-index: -1;
+    text-align: center;
 }
 
 #import {
@@ -122,4 +123,24 @@ main:after {
 
 #import input {
 	display: none;
+}
+
+#fromServer {
+	    display: table;
+	    width: auto;
+	    background-color: #eee;
+	    border-spacing: 5px;
+	    text-align: center;
+}
+
+.entry {
+       display: table-row;
+       width: auto;
+       clear: both;
+}
+
+.entryItem {
+       float: left;
+       display: table-column;
+       width: 200px;      
 }

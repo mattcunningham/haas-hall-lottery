@@ -21,5 +21,26 @@ $(':file').change(function(){
 });
 
 function completeHandler(jqXHR, textStatus) {
-    console.log(jqXHR);
+    jqXHR.forEach(function(entry) {
+	    $("#fromServer").append(createElement(entry))
+    });
+    $("#getDataButton").css("display","none");
+}
+
+function createElement(entry) {
+    output = "<div class=\"entry\">"
+    for (var key in entry) {
+	if (entry.hasOwnProperty(key)) {
+	    if (entry[key] === Object(entry[key])) { 
+		    for (var objKey in entry[key]) {
+			output += "<span class=\"entryItem\">" + entry[key][objKey] + "</span>";
+		    }
+	    } else {
+		output += "<span class=\"entryItem\">" + entry[key] + "</span>";
+	    }
+	}
+    }
+    output += "</div>\n"
+	console.log(output);
+    return output
 }
