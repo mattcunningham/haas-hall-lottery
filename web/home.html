@@ -3,26 +3,22 @@
   <head>
     <title>Haas Hall Academy Lottery</title>
   </head>
-  <style>
-    body {
-    background-color:rgb(1,81,154);
-    font-family:"Palatino Linotype", serif;
-    color:rgb(255,255,255);
-    }
-
-    button {
-    background-color:rgb(248,195,65);
-    color:rgb(1,81,154);
-    font-family:"Palatino Linotype", serif;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="/static/main.css"/>
   <body>
-    <center>
-      <h1>Haas Hall Academy Lottery Generator</h1>
-      <image src=http://www.haashall.org/wp-content/uploads/2015/10/logo.png alt="Haas Hall Crest" style="width:300px;height:300px;">
-	<p style=font-size:75%>Every scholar, every day - college bound!</p>
-	<button type="button" style=font-size:100%>Surrender your <b>soul</b> to the void.</button>
-    </center>
+    <header>
+      <image src="/static/logo.png" alt="Haas Hall Academy"/>
+      <hr/>
+    </header>
+    <main>
+      <form id="container" action="/import" method="post" enctype="multipart/form-data">
+	<div id="import">
+	  <label for="getData" id="getDataButton">Import CSV Data</label>
+	  <input value="Import CSV Data" accept=".csv" type="file" id="getData"/>
+	</div>
+	<div id="fromServer"></div>
+      </form>
+    </main>
+    <script src="/static/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script src="/static/main.js" type="text/javascript"></script>
   </body>
 </html>
-  

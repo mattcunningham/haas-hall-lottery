@@ -9,6 +9,7 @@ import (
 	"os/exec"
 	"runtime"
 	"strings"
+	"encoding/json"
 )
 
 const (
@@ -72,16 +73,29 @@ func main() {
 		fmt.Println(formatPrint("REQUEST[200]: ", GREEN), r.URL) // prints to console
 	})
 
-	http.HandleFunc("/lottery", func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path != "/lottery" {
+	http.HandleFunc("/post", func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/post" && r.Method != "POST" {
 			NotFound(w, r)
 			return
 		}
-		s, _ := OpenPage("lottery.html")
-		w.Header().Set("Content-Type", "text/html")
-		w.Write([]byte(s))                                       // prints to webpage
+		w.Header().Set("Content-Type", "application/json")
+		entries := CSVtoEntries(r.FormValue("data"))
+		data, err := json.Marshal(entries) // the error needs to do something
+		if err != nil {
+			fmt.Println(err)
+		}
+		w.Write(data)
 		fmt.Println(formatPrint("REQUEST[200]: ", GREEN), r.URL) // prints to console
 	})
+
+	/*http.HandleFunc("/sort", func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/sort" {
+			NotFound(w, r)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		
+	}*/
 
 	http.HandleFunc("/static/", func(w http.ResponseWriter, r *http.Request) {
 		if !strings.HasPrefix(r.URL.Path, "/static") {
@@ -96,6 +110,10 @@ func main() {
 			w.Header().Set("Content-Type", "image/jpg")
 		} else if strings.HasSuffix(r.URL.Path, ".html") {
 			w.Header().Set("Content-Type", "text/html")
+		} else if strings.HasSuffix(r.URL.Path, ".css") {
+			w.Header().Set("Content-Type", "text/css")
+		} else if strings.HasSuffix(r.URL.Path, ".js") {
+			w.Header().Set("Content-Type", "text/javascript")
 		}
 		w.Write([]byte(s))
 		fmt.Println(formatPrint("REQUEST[200]: ", YELLOW), r.URL)
