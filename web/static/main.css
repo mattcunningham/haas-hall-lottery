@@ -143,12 +143,12 @@ main:after {
        float: left;
        display: table-column;
        width: 200px;
-       background: #d4d4d4      
+       background: #d4d4d4;      
 }
 
 .entryItem-even {
        float: left;
        display: table-column;
        width: 200px;      
-       background: #ccc
+       background: #ccc;
 }
