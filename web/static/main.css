@@ -136,6 +136,7 @@ main:after {
 .entry {
        display: table-row;
        width: auto;
+       height: 100%
        clear: both;
 }
 
