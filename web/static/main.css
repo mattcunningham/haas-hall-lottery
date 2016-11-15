@@ -139,8 +139,16 @@ main:after {
        clear: both;
 }
 
-.entryItem {
+.entryItem-odd {
+       float: left;
+       display: table-column;
+       width: 200px;
+       background: #d4d4d4      
+}
+
+.entryItem-even {
        float: left;
        display: table-column;
        width: 200px;      
+       background: #ccc
 }
