@@ -35,17 +35,17 @@ function createElement(entry) {
 	    if (entry[key] === Object(entry[key])) { 
 		for (var objKey in entry[key]) {
 		    if (index % 2 == 0) { // even
-			output += "<span class=\"entryItem-even\">" + entry[key][objKey] + "</span>";
+			output += "<span class=\"entry-item even\">" + entry[key][objKey] + "</span>";
 		    } else {
-			output += "<span class=\"entryItem-odd\">" + entry[key][objKey] + "</span>";
+			output += "<span class=\"entry-item odd\">" + entry[key][objKey] + "</span>";
 		    }
 		    index++
 		}
 	    } else {
 		if (index % 2 == 0) { // even
-		    output += "<span class=\"entryItem-even\">" + entry[key] + "</span>";
+		    output += "<span class=\"entry-item even\">" + entry[key] + "</span>";
 		} else {
-		    output += "<span class=\"entryItem-odd\">" + entry[key] + "</span>";
+		    output += "<span class=\"entry-item odd\">" + entry[key] + "</span>";
 		}
 		index++
 	    }
