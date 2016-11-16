@@ -127,20 +127,24 @@ main:after {
 
 #fromServer {
 	    display: table;
-	    width: auto;
+	    width: 100%;
 	    background-color: #eee;
-	    border-spacing: 5px;
 	    text-align: center;
 }
 
 .entry {
-       display: table-row;
-       width: auto;
-       clear: both;
+	  display: table-row;
 }
 
-.entryItem {
-       float: left;
-       display: table-column;
-       width: 200px;      
+.entry-item {
+        display: table-cell;
+        width: 200px;
+}
+
+.odd {
+        background: #d4d4d4;
+}
+
+.even {
+       background: #ccc;
 }
