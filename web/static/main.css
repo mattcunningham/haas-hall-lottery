@@ -4,40 +4,6 @@ body {
      background: #fff;
 }
 
-header {
-       position: relative;
-       text-align: center;
-       padding-top: 30px;
-       padding-right: -2px;
-       width: 20%;
-       height: 100%;
-       background: #eee;
-       float: left;
-       overflow: hidden;
-}
-
-header:after {
-    content: '';
-    display: block;
-    position: absolute;
-        top: 0; right: 0;
-    width: 6px;
-    height: 100%;
-    background: #ffc63d;
-}
-
-header > img {
-       width: 80%;
-       margin-bottom: 25px;
-}
-
-#hidesidebar {
-        display: none;
-}
-
-#hidesidebar:checked + label > img {
-	width: 50%;
-}
 
 hr {
    color: #ffc63d;
@@ -48,23 +14,12 @@ hr {
 
 main {
      position: relative;
-     width: 80%;
+     width: 100%;
      height: 100%;
      background: #005198;
      float: right;
      padding-top: 3.5%;
      z-index: 3;
-}
-
-main:before {
-    font-weight: bold;
-    content: '«';
-    width: 50px;
-    background: #ffc63d;
-    color: #005198;
-    font-size: 30px;
-    padding: 0px 10px 4px 10px;
-    z-index: 2;
 }
 
 main:after {
@@ -132,6 +87,19 @@ main:after {
 	    text-align: center;
 }
 
+#export {
+    display: none;
+    margin: 10px;
+    background: #0560b7;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    /* border: 3px solid yellow; */
+    /* border-radius: 100px; */
+    font-family: sans-serif;
+    padding: 5px;
+}
+
 .entry {
 	  display: table-row;
 }
@@ -139,6 +107,27 @@ main:after {
 .entry-item {
         display: table-cell;
         width: 200px;
+}
+
+.header {
+	background: #555;
+	color: white;
+}
+
+#admitted {
+	  color: green;
+}
+
+#waitlisted {
+	  color: blue;
+}
+
+#faculty {
+	 color: red;
+}
+
+#sibling {
+	 color: purple;
 }
 
 .odd {

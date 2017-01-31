@@ -5,16 +5,13 @@
   </head>
   <link rel="stylesheet" type="text/css" href="/static/main.css"/>
   <body>
-    <header>
-      <image src="/static/logo.png" alt="Haas Hall Academy"/>
-      <hr/>
-    </header>
     <main>
       <form id="container" action="/import" method="post" enctype="multipart/form-data">
 	<div id="import">
 	  <label for="getData" id="getDataButton">Import CSV Data</label>
 	  <input value="Import CSV Data" accept=".csv" type="file" id="getData"/>
 	</div>
+	<a href="" id="export">export</a>
 	<div id="fromServer"></div>
       </form>
     </main>

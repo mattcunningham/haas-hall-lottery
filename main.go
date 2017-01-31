@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -9,7 +10,6 @@ import (
 	"os/exec"
 	"runtime"
 	"strings"
-	"encoding/json"
 )
 
 const (
@@ -80,7 +80,10 @@ func main() {
 		}
 		w.Header().Set("Content-Type", "application/json")
 		entries := CSVtoEntries(r.FormValue("data"))
-		data, err := json.Marshal(entries) // the error needs to do something
+		sorted := Sort(entries)
+		prioritized := Prioritize(sorted)
+		admitted := Admit(prioritized, 3)
+		data, err := json.Marshal(admitted) // the error needs to do something
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -94,13 +97,13 @@ func main() {
 			return
 		}
 		w.Header().Set("Content-Type", "application/json")
-		
+
 	}*/
 
 	http.HandleFunc("/static/", func(w http.ResponseWriter, r *http.Request) {
 		if !strings.HasPrefix(r.URL.Path, "/static") {
 			NotFound(w, r)
-		}	
+		}
 		s, err := OpenPage(r.URL.Path[1:])
 		if err != nil {
 			NotFound(w, r)
