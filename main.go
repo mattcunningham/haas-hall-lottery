@@ -1,15 +1,16 @@
-package main
+package lottery
 
 import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
+	//"log"
 	"net/http"
-	"os"
-	"os/exec"
-	"runtime"
+	//"runtime"
 	"strings"
+	"os"
+	
+//	"google.golang.org/appengine"
 )
 
 const (
@@ -60,8 +61,9 @@ func OpenPage(fileName string) (string, error) {
 }
 
 // Main function to serve the site
-func main() {
+func init() {
 	// serves for the webpage "/" — i.e. the homepage
+	
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path != "/" { // we want "/" with no appending text
 			NotFound(w, r)
@@ -91,15 +93,6 @@ func main() {
 		fmt.Println(formatPrint("REQUEST[200]: ", GREEN), r.URL) // prints to console
 	})
 
-	/*http.HandleFunc("/sort", func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path != "/sort" {
-			NotFound(w, r)
-			return
-		}
-		w.Header().Set("Content-Type", "application/json")
-
-	}*/
-
 	http.HandleFunc("/static/", func(w http.ResponseWriter, r *http.Request) {
 		if !strings.HasPrefix(r.URL.Path, "/static") {
 			NotFound(w, r)
@@ -122,17 +115,4 @@ func main() {
 		fmt.Println(formatPrint("REQUEST[200]: ", YELLOW), r.URL)
 	})
 
-	var err error
-	switch runtime.GOOS {
-	case "linux":
-		err = exec.Command("xdg-open", "http://localhost:1427/").Start()
-	case "windows", "darwin":
-		err = exec.Command("open", "http://localhost:1427/").Start()
-	default:
-		err = fmt.Errorf("unsupported platform!")
-	}
-	if err != nil {
-		panic(err)
-	}
-	log.Fatal(http.ListenAndServe(":1427", nil))
 }
