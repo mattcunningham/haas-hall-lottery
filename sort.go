@@ -18,6 +18,7 @@ type Entry struct {
 	Info     map[string]string // unnecessary to formally store private info
 }
 
+// this is first step
 // randomly sorts entries, no acceptances/waitlists are determined here
 func Sort(allEntries []Entry) []Entry {
 	seed := rand.New(rand.NewSource(time.Now().UnixNano())) // ensures randomness
