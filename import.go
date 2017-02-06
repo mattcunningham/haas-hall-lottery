@@ -54,10 +54,10 @@ func CSVtoEntryMap(recordNames map[int]string, fullRecord []string, sibling int,
 	for i, record := range fullRecord {
 		if i != sibling && i != faculty && i != grade {
 			entry.Info[recordNames[i]] = record
-		} else if i == sibling && len(record) > 0 { // If this is the sibling record and it has ANY value, priority given next line
-			entry.Priority = 1 // high priority
-		} else if i == faculty && len(record) > 0 { // If this is the faculty record and it has ANY value, priority given next line
+		} else if i == faculty && strings.ToLower(strings.Trim(record, " ")) == "yes" { // If this is the faculty record and it has ANY value, priority given next line
 			entry.Priority = 2 // higher priority
+		} else if i == sibling && strings.ToLower(strings.Trim(record, " ")) == "yes" { // If this is the sibling record and it has ANY value, priority given next line
+			entry.Priority = 1 // high priority
 		} else if i == grade {
 			entry.Grade, _ = strconv.Atoi(record) // will error if value isn't numerical. TODO: deal with this
 		}
