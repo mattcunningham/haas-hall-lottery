@@ -1,5 +1,7 @@
 package lottery
 
+// written by Matthew Cunningham
+
 import (
 	"encoding/json"
 	"fmt"
@@ -36,23 +38,23 @@ const (
   crossorigin="anonymous"></script>
     <script type="text/javascript">
 $(':file').change(function(){
-var file = this.files[0];
-var name = file.name;
-var size = file.size;
-var type = file.type;
-var result;
-      if (file) {
-    var reader = new FileReader();
-    reader.readAsText(file);
-    reader.onload = function(e) {
-    result = e.target.result;
-$.ajax({
-url: 'post',  //Server script to process data
-type: 'POST',
-dataType: 'json',
-        success: completeHandler,
-        data: {'data': result, 'entries': prompt("How many people do you want to admit?")},
-});
+    var file = this.files[0];
+    var name = file.name;
+    var size = file.size;
+    var type = file.type;
+    var result;
+    if (file) {
+        var reader = new FileReader();
+        reader.readAsText(file);
+        reader.onload = function(e) {
+        result = e.target.result;
+        $.ajax({
+            url: 'post',  //Server script to process data
+            type: 'POST',
+            dataType: 'json',
+            success: completeHandler,
+            data: {'data': result, 'entries': prompt("How many people do you want to admit?")},
+        });
     }
 }
 });
@@ -85,19 +87,19 @@ function createHeader(entry) {
     output = "<div class=\"entry header\">"
     for (var key in entry) {
         if (key === "Grade" || key === "Priority") {
-            fileData += key + ", ";
+            fileData += key + ",";
             continue;
         }
         if (entry[key] === Object(entry[key])) {
             for (var objKey in entry[key]) {
-                fileData += objKey + ", ";
+                fileData += objKey + ",";
             }
         } else {
-            fileData += key + ", ";
+            fileData += key + ",";
             output += "<span class=\"entry-item header\">" + key + "</span>";
         }
     }
-    fileData = fileData.substring(0, fileData.length - 2) + "\n";
+    fileData = fileData.substring(0, fileData.length - 1) + "\n";
     return [output, fileData];
 }
 
@@ -108,61 +110,76 @@ function createElement(entry) {
     for (var key in entry) {
         if (entry.hasOwnProperty(key)) {
             if (key === "Grade" || key === "Priority") {
-                fileData += entry[key] + ", ";
+                fileData += formatCSV(key, entry[key]) + ",";
                 continue;
             }
             if (entry[key] === Object(entry[key])) { 
                 for (var objKey in entry[key]) {
-                    fileData += entry[key][objKey] + ", ";
+                    fileData += entry[key][objKey] + ",";
                 }
             } else { // this is for the real information
                 if (index % 2 == 0) { // even
-                    fileData += formatCSV(key, entry[key]) + ", ";
+                    fileData += formatCSV(key, entry[key]) + ",";
                     output += "<span class=\"entry-item even\">" + formatAdmittance(key, entry[key]) + "</span>";
                 } else {
-                    fileData += formatCSV(key, entry[key]) + ", ";
+                    fileData += formatCSV(key, entry[key]) + ",";
                     output += "<span class=\"entry-item odd\">" + formatAdmittance(key, entry[key]) + "</span>";
                 }
                 index++;
             }
         }
     }
-    fileData = fileData.substring(0, fileData.length - 2) + "\n";
+    fileData = fileData.substring(0, fileData.length - 1) + "\n";
     output += "</div>\n"
     return [output, fileData];
 }
 
+
+var waitListCounter = 0;
 function formatCSV(key, info) {
-    if (key !== "Status") {
+    if (key !== "Status" && key !== "Priority") {
         return info
     }
-    if (info == 2) {
-        return "Admitted";
-    } else if (info == 1) {
-        return "Waitlisted";
+    if (key === "Status") {
+        if (info == 2) {
+            return "Admitted";
+        } else if (info == 1) {
+            waitListCounter++;
+            return "Wait list " + waitListCounter;
+        }
+    }
+    if (key === "Priority") {
+        if (info == 2) {
+            return "Faculty";
+        } else if (info == 1) {
+            return "Sibling";
+        } else {
+            return "";
+        }
     }
 }
 
+var waitListAdmitCounter = 0;
 function formatAdmittance(key, info) {
-    console.log(key);
     if (key !== "Status" && key !== "Priority") {
        return info;
     }
     if (key === "Status") {
-if (info == 2) {
-    return "<span id=\"admitted\">Admitted</span>";
-} else if (info == 1) {
-    return "<span id=\"waitlisted\">Waitlisted</span>";
-}
+        if (info == 2) {
+             return "<span id=\"admitted\">Admitted</span>";
+        } else if (info == 1) {
+            waitListAdmitCounter++;
+            return "<span id=\"waitlisted\">Wait list <span id=\"waitlist-count\">" + waitListAdmitCounter + "</span></span>";
+        }
     }
     if (key === "Priority") {
-if (info == 2) {
-    return "<span id=\"faculty\">Faculty</span>";
-} else if (info == 1) {
-    return "<span id=\"sibling\">Sibling</span>";
-} else {
-    return "";
-}
+        if (info == 2) {
+            return "<span id=\"faculty\">Faculty</span>";
+        } else if (info == 1) {
+            return "<span id=\"sibling\">Sibling</span>";
+        } else {
+            return "";
+        }
     }
 }
     </script>
