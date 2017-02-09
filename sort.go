@@ -16,7 +16,7 @@ type Entry struct {
 	Status    int    // admitted or waitlisted
 	Random    int    // "random" number
 	LotteryID string // lottery id
-        Priority  int // priority status
+	Priority  int    // priority status
 	Grade     int
 	Info      map[string]string // it's unnecessary to formally store private info
 }

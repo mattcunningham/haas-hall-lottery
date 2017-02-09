@@ -56,7 +56,7 @@ func CSVtoEntryMap(recordNames map[int]string, fullRecord []string, priority int
 	for i, record := range fullRecord {
 		if i != priority && i != grade && i != lotteryID {
 			entry.Info[recordNames[i]] = record
-		} else if i == priority && strings.ToLower(strings.Trim(record, " ")) == "faculty" { 
+		} else if i == priority && strings.ToLower(strings.Trim(record, " ")) == "faculty" {
 			entry.Priority = 2 // higher priority
 		} else if i == priority && strings.ToLower(strings.Trim(record, " ")) == "sibling" {
 			entry.Priority = 1 // high priority
