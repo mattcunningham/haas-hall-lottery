@@ -1,3 +1,4 @@
+// written by Matthew Cunningham
 package lottery
 
 import (
@@ -12,10 +13,12 @@ const (
 )
 
 type Entry struct {
-	Status   int               // admitted or waitlisted
-	Priority int               // priority status
-	Grade    int               // grade of student
-	Info     map[string]string // unnecessary to formally store private info
+	Status    int    // admitted or waitlisted
+	Priority  int    // priority status
+	Random    int    // "random" number
+	LotteryID string // lottery id
+	Grade     int
+	Info      map[string]string // unnecessary to formally store private info
 }
 
 // this is first step
@@ -26,6 +29,7 @@ func Sort(allEntries []Entry) []Entry {
 	sorted := make([]Entry, len(allEntries))                // creating new array that will be sorted
 	for i, v := range perm {
 		sorted[i] = allEntries[v] // for every index, a random entry is selected
+		sorted[i].Random = i
 	}
 	return sorted
 }

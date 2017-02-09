@@ -59,15 +59,20 @@ dataType: 'json',
 
 function completeHandler(jqXHR, textStatus) {
     outputFile = "";
-    $("#fromServer").append(createHeader(jqXHR[0]));
+    var header = createHeader(jqXHR[0]);
+    console.log(header);
+    var headerOutput = header[0];
+    var headerFile = header[1];
+    $("#fromServer").append(headerOutput);
+    outputFile += headerFile;
     jqXHR.forEach(function(entry) {
-    var ret = createElement(entry);
-    var forOutput = ret[0];
-    var forFile = ret[1];
-    $("#fromServer").append(forOutput);
-    $("#export").css("display", "block");
-    outputFile += forFile;
-});
+        var ret = createElement(entry);
+        var forOutput = ret[0];
+        var forFile = ret[1];
+        $("#fromServer").append(forOutput);
+        $("#export").css("display", "block");
+        outputFile += forFile;
+    });
     $("#getDataButton").css("display","none");
     var a = document.getElementById("export");
     var file = new Blob([outputFile], {type: "text/plain"});
@@ -76,15 +81,24 @@ function completeHandler(jqXHR, textStatus) {
 }
 
 function createHeader(entry) {
+    fileData = ""
     output = "<div class=\"entry header\">"
     for (var key in entry) {
+        if (key === "Grade" || key === "Priority") {
+            fileData += key + ", ";
+            continue;
+        }
         if (entry[key] === Object(entry[key])) {
-continue;
-} else {
-    output += "<span class=\"entry-item header\">" + key + "</span>";
-}
+            for (var objKey in entry[key]) {
+                fileData += objKey + ", ";
+            }
+        } else {
+            fileData += key + ", ";
+            output += "<span class=\"entry-item header\">" + key + "</span>";
+        }
     }
-    return output;
+    fileData = fileData.substring(0, fileData.length - 2) + "\n";
+    return [output, fileData];
 }
 
 function createElement(entry) {
@@ -92,27 +106,45 @@ function createElement(entry) {
     output = "<div class=\"entry\">"
     fileData = ""
     for (var key in entry) {
-if (entry.hasOwnProperty(key)) {
-    if (entry[key] === Object(entry[key])) { 
-continue;
-    } else { // this is for the real information
-if (index % 2 == 0) { // even
-    fileData += entry[key] + ", ";
-    output += "<span class=\"entry-item even\">" + formatAdmittance(key, entry[key]) + "</span>";
-} else {
-    fileData += entry[key] + ", ";
-    output += "<span class=\"entry-item odd\">" + formatAdmittance(key, entry[key]) + "</span>";
-}
-index++
+        if (entry.hasOwnProperty(key)) {
+            if (key === "Grade" || key === "Priority") {
+                fileData += entry[key] + ", ";
+                continue;
+            }
+            if (entry[key] === Object(entry[key])) { 
+                for (var objKey in entry[key]) {
+                    fileData += entry[key][objKey] + ", ";
+                }
+            } else { // this is for the real information
+                if (index % 2 == 0) { // even
+                    fileData += formatCSV(key, entry[key]) + ", ";
+                    output += "<span class=\"entry-item even\">" + formatAdmittance(key, entry[key]) + "</span>";
+                } else {
+                    fileData += formatCSV(key, entry[key]) + ", ";
+                    output += "<span class=\"entry-item odd\">" + formatAdmittance(key, entry[key]) + "</span>";
+                }
+                index++;
+            }
+        }
     }
-}
-    }
-    fileData += "\n";
+    fileData = fileData.substring(0, fileData.length - 2) + "\n";
     output += "</div>\n"
     return [output, fileData];
 }
 
+function formatCSV(key, info) {
+    if (key !== "Status") {
+        return info
+    }
+    if (info == 2) {
+        return "Admitted";
+    } else if (info == 1) {
+        return "Waitlisted";
+    }
+}
+
 function formatAdmittance(key, info) {
+    console.log(key);
     if (key !== "Status" && key !== "Priority") {
        return info;
     }
@@ -134,6 +166,7 @@ if (info == 2) {
     }
 }
     </script>
+    <!-- also I'm not a supporter of school choice -->
   </body>
 </html>`
 )
@@ -171,7 +204,7 @@ func init() {
 			return
 		}
 		w.Header().Set("Content-Type", "text/html")
-		w.Write([]byte(HOME))                                    // prints to webpage
+		w.Write([]byte(HOME)) // prints to webpage
 	})
 
 	http.HandleFunc("/post", func(w http.ResponseWriter, r *http.Request) {

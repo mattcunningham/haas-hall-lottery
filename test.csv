@@ -1,11 +1,12 @@
-Grade,Faculty,Sibling,First name,Last name
-8,,,Susan,Cunningham
-9,,,Matthew,Cunningham
-9,Yes,,Jade,DeSpain
-9,,Yes,Trenton,Maxwell
-9,,,Dr,S
-9,Yes,,Lily,Bullard
-9,,,Chad,Thurman
-2,Yes,,Baby,Thurman
-9,Yes,,Chloe,Kilpatrick
-9,,,Anh,Cao
+Grade,Priority,First name,Last name,Lottery ID
+9,Faculty,Susan,Cunningham,2E383
+9,Faculty,Matthew,Cunningham,2F282
+9,Sibling,Jade,DeSpain,S@#$S
+9,,Trenton,Maxwell,@#SWQ
+9,,Dr,S,@#RWEF
+9,,Lily,Bullard,SFWER
+9,Faculty,Chad,Thurman,SDGWEG
+9,,Baby,Thurman,ASDGEWG
+9,,Chloe,Kilpatrick,ASDF
+9,Sibling,Anh,Cao,ASGE
+9,,Andrew,Hudspeth,WOEIRJ

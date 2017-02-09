@@ -1,3 +1,4 @@
+// written by Matthew Cunningham
 package lottery
 
 import (
@@ -14,7 +15,7 @@ import (
 func CSVtoEntries(data string) []Entry {
 	r := csv.NewReader(strings.NewReader(data))
 	var recordNames map[int]string
-	var sibling, faculty, grade int
+	var priority, grade, lotteryID int
 	var entries []Entry
 	for {
 		record, err := r.Read()
@@ -24,42 +25,45 @@ func CSVtoEntries(data string) []Entry {
 			panic(err) // this needs to be a better error, prob return to tell user
 		}
 		if len(recordNames) == 0 {
-			recordNames, sibling, faculty, grade = SetNames(record)
+			recordNames, priority, grade, lotteryID = SetNames(record)
 		} else {
-			entries = append(entries, CSVtoEntryMap(recordNames, record, sibling, faculty, grade))
+			entries = append(entries, CSVtoEntryMap(recordNames, record, priority, grade, lotteryID))
 		}
 	}
 	return entries
 }
 
-func SetNames(names []string) (recordNames map[int]string, sibling int, faculty int, grade int) {
+// this gets the index of the main fields
+func SetNames(names []string) (recordNames map[int]string, priority int, grade int, lotteryID int) {
 	recordNames = make(map[int]string, len(names))
 	for i, name := range names {
 		name = strings.TrimSpace(name)
 		recordNames[i] = name
-		if name == "Sibling" {
-			sibling = i
-		} else if name == "Faculty" {
-			faculty = i
+		if name == "Priority" {
+			priority = i
 		} else if name == "Grade" {
 			grade = i
+		} else if name == "Lottery ID" {
+			lotteryID = i
 		}
 	}
-	return recordNames, sibling, faculty, grade
+	return recordNames, priority, grade, lotteryID
 }
 
-func CSVtoEntryMap(recordNames map[int]string, fullRecord []string, sibling int, faculty int, grade int) Entry {
+func CSVtoEntryMap(recordNames map[int]string, fullRecord []string, priority int, grade int, lotteryID int) Entry {
 	var entry Entry
 	entry.Info = make(map[string]string, len(fullRecord)-3)
 	for i, record := range fullRecord {
-		if i != sibling && i != faculty && i != grade {
+		if i != priority && i != grade && i != lotteryID {
 			entry.Info[recordNames[i]] = record
-		} else if i == faculty && strings.ToLower(strings.Trim(record, " ")) == "yes" { // If this is the faculty record and it has ANY value, priority given next line
+		} else if i == priority && strings.ToLower(strings.Trim(record, " ")) == "faculty" { 
 			entry.Priority = 2 // higher priority
-		} else if i == sibling && strings.ToLower(strings.Trim(record, " ")) == "yes" { // If this is the sibling record and it has ANY value, priority given next line
+		} else if i == priority && strings.ToLower(strings.Trim(record, " ")) == "sibling" {
 			entry.Priority = 1 // high priority
 		} else if i == grade {
 			entry.Grade, _ = strconv.Atoi(record) // will error if value isn't numerical. TODO: deal with this
+		} else if i == lotteryID {
+			entry.LotteryID = record
 		}
 	}
 	return entry
