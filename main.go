@@ -9,7 +9,7 @@ import (
 	"strconv"
 )
 
-const HOME   = `<!doctype html5>
+const HOME = `<!doctype html5>
 <html>
   <head>
     <title>Haas Hall Academy Lottery</title>
