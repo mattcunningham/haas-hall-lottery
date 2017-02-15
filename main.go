@@ -7,15 +7,9 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	//	"google.golang.org/appengine"
 )
 
-const (
-	RED    = "\u001B[31m"
-	YELLOW = "\u001B[33m"
-	GREEN  = "\u001B[32m"
-	END    = "\u001B[0m"
-	HOME   = `<!doctype html5>
+const HOME   = `<!doctype html5>
 <html>
   <head>
     <title>Haas Hall Academy Lottery</title>
@@ -148,7 +142,6 @@ function formatAdmittance(key, info) {
     </script>
   </body>
 </html>`
-)
 
 type fileError struct {
 	error string
@@ -158,16 +151,8 @@ func (e fileError) Error() string {
 	return fmt.Sprintf("%s", e.error)
 }
 
-// Returns a string formatted to be a specific color when printed in the console
-// The only available colors are listed as constants. Add more as necessary.
-// ex. formatPrint("my string", RED)
-func formatPrint(s string, color string) string {
-	return color + s + END
-}
-
 // Writes a 404 message to the page
 func NotFound(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(formatPrint("REQUEST[404]: ", RED), r.URL)
 	w.Header().Set("Content-Type", "text/html")
 	w.Write([]byte("nothing to see here"))
 	w.WriteHeader(http.StatusNotFound)
