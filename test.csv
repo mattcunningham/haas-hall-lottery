@@ -1,12 +1,12 @@
-Grade,Priority,First name,Last name,Lottery ID
-9,Faculty,Susan,Cunningham,2E383
-9,Faculty,Matthew,Cunningham,2F282
-9,Sibling,Jade,DeSpain,S@#$S
-9,,Trenton,Maxwell,@#SWQ
-9,,Dr,S,@#RWEF
-9,,Lily,Bullard,SFWER
-9,Faculty,Chad,Thurman,SDGWEG
-9,,Baby,Thurman,ASDGEWG
-9,,Chloe,Kilpatrick,ASDF
-9,Sibling,Anh,Cao,ASGE
-9,,Andrew,Hudspeth,WOEIRJ
+Grade,Priority,First name,Last name,Lottery ID,Address
+9,Faculty,Susan,Cunningham,2E383,1245 Happy Lane
+9,Faculty,Matthew,Cunningham,2F282,2983 Sad Lane
+9,,Jade,DeSpain,S@#$S,298 Front Place
+9,,Trenton,Maxwell,@#SWQ,928 Back Ave
+9,,Dr,S,@#RWEF,2983 Side Place
+9,,Lily,Bullard,SFWER,352 Joyce
+9,Faculty,Chad,Thurman,SDGWEG,292 Apple Ave
+9,Faculty,Baby,Thurman,ASDGEWG,928 Pear Place
+9,,Chloe,Kilpatrick,ASDF,982 Vicente Drive
+9,Sibling,Anh,Cao,ASGE,299 Park Place Apt #1
+9,,Andrew,Hudspeth,WOEIRJ,7392 Wells Circle

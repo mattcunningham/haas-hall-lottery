@@ -13,23 +13,161 @@ const HOME = `<!doctype html5>
 <html>
   <head>
     <title>Haas Hall Academy Lottery</title>
-    <link href="https://www.haashall.org/lottery/style.css" rel="stylesheet" type="text/css" />
+    <style>
+@charset "utf-8";
+
+@import "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css";
+
+body {
+  background: url('http://haashall.org/lottery/assets/content.jpg');
+}
+
+.container {
+  max-width: 980px;
+}
+
+.import-container {
+  margin: 10px auto;
+  position: relative;
+  padding: 100px 0 0;
+  width: 500px;
+}
+
+#rose {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 10;
+  width: 500px;
+  height: 200px;
+  background: url('http://haashall.org/lottery/assets/images/waxseal-300.png') no-repeat center center;
+}
+
+#import {
+  margin: 0 auto 40px;
+  width: 500px;
+  background: #fff;
+  text-align: center;
+  padding: 100px 0 0;
+  -webkit-box-shadow: 10px 10px 80px 10px rgba(0,0,0,0.16);
+	-moz-box-shadow: 10px 10px 80px 10px rgba(0,0,0,0.16);
+	box-shadow: 10px 10px 80px 10px rgba(0,0,0,0.16);
+}
+
+#import h1 {
+  font-weight: bolder;
+  font-size: 40px;
+}
+
+#import h2 {
+  margin-top: 0;
+  text-transform: uppercase;
+}
+
+#import h3 {
+  margin-top: 0;
+  font-weight: bold;
+  color: #337ab7;
+}
+
+.drag {
+  display: block;
+  width: 452px;
+  height: 216px;
+	padding-top: 240px;
+	overflow: hidden;
+	-webkit-overflow: hidden;
+	-moz-overflow: hidden;
+  margin: 0 auto 20px;
+  background: url('http://haashall.org/lottery/assets/images/drag.png') no-repeat center center;
+}
+
+label#getDataButton {
+	font-family: Arial;
+	color: #ffffff;
+	font-size: 24px;
+	font-weight: bold;
+	text-transform: uppercase;
+	padding: 10px 20px 10px 20px;
+	text-decoration: none;
+	margin-bottom: 30px;
+}
+
+.export {
+	display: none;
+}
+
+.export h1 {
+  font-weight: bolder;
+  font-size: 54px;
+  margin-top: 50px;
+  text-align: right;
+}
+.export h2 {
+  margin-top: 0;
+  text-transform: uppercase;
+  text-align: right;
+}
+
+.export-footer h3 span {
+  font-weight: bold;
+}
+
+a#export {
+	font-family: Arial;
+	color: #ffffff;
+	font-size: 24px;
+	font-weight: bold;
+	text-transform: uppercase;
+	padding: 10px 20px 10px 20px;
+	text-decoration: none;
+	float: right;
+}
+		</style>
   </head>
   <body>
     <main>
       <form id="container" action="/import" method="post" enctype="multipart/form-data">
-<div id="import">
-  <label for="getData" id="getDataButton">Import CSV Data</label>
-  <input value="Import CSV Data" accept=".csv" type="file" id="getData"/>
-</div>
-<a href="" id="export">export</a>
-<div id="fromServer"></div>
+				<div class="import-container">
+					<div id="rose"></div>
+					<div id="import">
+						<h1>Haas Hall Academy</h1>
+						<h2>Admissions Lottery</h2>
+						<h3>2017 &mdash; 2018</h3>
+	  				<input class="drag" class="btn btn-primary" value="Import CSV Data" accept=".csv" type="file" id="getData"/>
+						<label for="getData" id="getDataButton" class="btn btn-primary">Import CSV Data</label>
+					</div>
+				</div>
+				<div class="export">
+					<div class="container">
+						<div class="row">
+	          	<div class="col-sm-2">
+	              <img src="http://haashall.org/lottery/assets/images/waxseal.png">
+	          	</div>
+	          	<div class="col-sm-10">
+	              <h1>Haas Hall Academy</h1>
+	              <h2>Admissions Lottery 2017 - 2018</h2>
+	          	</div>
+	        	</div>
+						<table class="table table-bordered">
+							<tbody id="fromServer">
+
+							</tbody>
+						</table>
+						<div class="export-footer">
+							<div class="row">
+								<div class="col-sm-6"></div>
+								<div class="col-sm-6"><a href="" id="export" class="btn btn-primary">Export</a></div>
+							</div>
+						</div>
+					</div>
+				</div>
       </form>
     </main>
     <script
-  src="https://code.jquery.com/jquery-3.1.1.min.js"
-  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-  crossorigin="anonymous"></script>
+		  src="https://code.jquery.com/jquery-3.1.1.min.js"
+		  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+		  crossorigin="anonymous"></script>
     <script type="text/javascript">
 $(":file").change(function() {
   var file = this.files[0], result;
@@ -62,6 +200,8 @@ function completeHandler(serverData, textStatus) {
     outputFile += forFile;
   });
   $("#getDataButton").css("display", "none");
+	$(".import-container").css("display", "none");
+	$(".export").css("display", "block");
   var a = document.getElementById("export");
   var file = new Blob([outputFile], { type: "text/plain" });
   a.href = URL.createObjectURL(file);
@@ -69,7 +209,7 @@ function completeHandler(serverData, textStatus) {
 }
 function createHeader(entry) {
   fileData = ""
-  output = '<div class="entry header">'
+  output = '<tr class="entry header">'
   for (var key in entry) {
     if (key === "Grade" || key === "Priority") {
       fileData += key + ",";
@@ -78,15 +218,17 @@ function createHeader(entry) {
         fileData += objKey + ",";
       }
     } else {
-      fileData += key + ",", output += '<span class="entry-item header">' + key + "</span>";
+      fileData += key + ",";
+			output += '<th class="entry-item header">' + key + "</th>";
     }
   }
+	output += "</tr>"
   fileData = fileData.substring(0, fileData.length - 1) + "\n";
   return [output, fileData];
 }
 function createElement(entry) {
   index = 0;
-  output = '<div class="entry">';
+  output = '<tr class="entry">';
   fileData = "";
   for (var key in entry) {
     if (key === "Grade" || key === "Priority") {
@@ -97,12 +239,12 @@ function createElement(entry) {
       }
     } else { // this is the real information
       fileData += formatCSV(key, entry[key]) + ",";
-      output += '<span class="entry-item ' + ((index % 2 == 0) ? "even" : "odd") + '">' + formatAdmittance(key, entry[key]) + "</span>";
+      output += '<td class="entry-item ' + ((index % 2 == 0) ? "even" : "odd") + '">' + formatAdmittance(key, entry[key]) + "</span>";
       index++;
     }
   }
   fileData = fileData.substring(0, fileData.length - 1) + "\n";
-  output += "</div>\n";
+  output += "</tr>\n";
   return [output, fileData];
 }
 var waitListCounter = 0;
