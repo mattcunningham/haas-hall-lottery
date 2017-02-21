@@ -1,5 +1,5 @@
 ## haas hall lottery
-[![GoDoc](http://godoc.org/github.com/mattcunningham/haas-hall-lottery?status.png)](http://godoc.org/github.com/mattcunningham/haas-hall-lottery)[![Build Status](https://travis-ci.org/mattcunningham/haas-hall-lottery.svg?branch=master)](http://travis-ci.org/mattcunningham/haas-hall-lottery)[![Coverage Status](https://coveralls.io/repos/mattcunningham/haas-hall-lottery/badge.svg?branch=master&service=github)](https://coveralls.io/github/mattcunningham/haas-hall-lottery?branch=master)
+[![GoDoc](http://godoc.org/github.com/mattcunningham/haas-hall-lottery?status.png)](http://godoc.org/github.com/mattcunningham/haas-hall-lottery)[![Build Status](https://travis-ci.org/mattcunningham/haas-hall-lottery.svg?branch=master)](http://travis-ci.org/mattcunningham/haas-hall-lottery)
 
 
 # Rules
